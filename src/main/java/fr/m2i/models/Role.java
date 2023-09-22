@@ -1,15 +1,14 @@
 package fr.m2i.models;
 
-public class Client {
+public class Role {
 
 	//Champs
 	
 	private Long id;
 	private String nom;
-	private String prenom;
-				
-	//Getters et Setters
 		
+	//Getters et Setters
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,18 +21,11 @@ public class Client {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	public String getPrenom() {
-		return prenom;
-	}
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-				
+	
 	//Constructeur
-		
-	public Client(Long id, String nom, String prenom) {
+	
+	public Role(Long id, String nom) {
 		this.id = id;
 		this.nom = nom;
-		this.prenom = prenom;
 	}
 }

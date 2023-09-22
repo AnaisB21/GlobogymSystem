@@ -16,10 +16,10 @@ public class GestBDD {
 	        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 	        
 	        //Connexion Adrien
-	        connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/formation", "root", "root");
+	        //connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/formation", "root", "root");
 	        
 	        //Connexion Anaïs
-	        //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/formation","root", null);
+	        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/formation","root", null);
 	        
 	        
 	        System.out.println("Connexion ok....");
