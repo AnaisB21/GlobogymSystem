@@ -10,23 +10,4 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>Accueil</display-name>
-    <servlet-name>Accueil</servlet-name>
-    <servlet-class>fr.m2i.controllers.Accueil</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Accueil</servlet-name>
-    <url-pattern>/Accueil</url-pattern>
-  </servlet-mapping>
-  <filter>
-    <display-name>Admin</display-name>
-    <filter-name>Admin</filter-name>
-    <filter-class>fr.m2i.filters.Admin</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>Admin</filter-name>
-    <url-pattern>/Admin</url-pattern>
-  </filter-mapping>
 </web-app>
