@@ -6,7 +6,7 @@ public class Cours {
 
 	//Champs
 	
-	private Long id, coachId, clientId;
+	private Long id, coachId, clientId, courstypeId;
 	private Date date;
 		
 	//Getters et Setters
@@ -36,14 +36,23 @@ public class Cours {
 	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 	}
+	public Long getCourstypeId() {
+		return courstypeId;
+	}
+	public void setCourstypeId(Long courstypeId) {
+		this.courstypeId = courstypeId;
+	}
+	
 	
 	//Constructeur
 	
-	public Cours(Long id, Date date, Long coachId, Long clientId) {
+	public Cours(Long id, Date date, Long coachId, Long clientId, Long courstypeId) {
 		this.id = id;
 		this.date = date;
 		this.coachId = coachId;
 		this.clientId = clientId;
+		this.courstypeId = courstypeId;
 	}
+
 	
 }

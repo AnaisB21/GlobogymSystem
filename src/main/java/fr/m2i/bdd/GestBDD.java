@@ -155,7 +155,9 @@ public class GestBDD {
   	  			Long id = rs.getLong("id");
   	  			Long coachId = rs.getLong("coach_id");
   	  			Long clientId = rs.getLong("client_id");
-  	  			Cours cours = new Cours(id, date, coachId, clientId);
+  	  			Long courstypeId = rs.getLong("courstype_id");
+  	  			
+  	  			Cours cours = new Cours(id, date, coachId, clientId, courstypeId);
   	  			listeCours.add(cours);
   	  		}
           
@@ -171,6 +173,7 @@ public class GestBDD {
   	  // Print the list to debug
   	  	for (Cours element : listeCours) {
   	  		System.out.println(element.getDate());
+  	  		System.out.println(element.getCourstypeId());
   	  	}
   	
   	  	return listeCours;
@@ -216,16 +219,18 @@ public class GestBDD {
 		}
     }
     
-    public void addCours(String date, int coachId, int clientId) {
+    public void addCours(String date, int coachId, int clientId, int courstypeId) {
     	
     	try {
-			String sql = "INSERT INTO cours (date, coach_id, client_id) VALUES (?, ?, ?) ";
+			String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
 			
 			PreparedStatement ps = connection.prepareStatement (sql);
 			
 			ps.setDate(1, Date.valueOf(date));
 			ps.setLong(2,coachId);
 			ps.setLong(3,clientId);
+			ps.setLong(4,courstypeId);
+			
 			
 			
 			ps.execute();
@@ -235,6 +240,79 @@ public class GestBDD {
 			e.printStackTrace();
 		}
     }
+    
+    public void addClientToCours(Client client, Cours cours) {
+    	try {
+    		String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setDate(1, (Date) cours.getDate());
+			ps.setLong(2, cours.getCoachId());
+			ps.setLong(3, client.getId());
+			ps.setLong(4, cours.getCourstypeId());
+			
+			ps.execute();
+			ps.close();
+    	}
+    	
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }   
+    
+    public void removeClientFromCours(Client client, Cours cours) {
+    	try {
+    		String sql = "DELETE FROM cours WHERE client_id = ? ";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setLong(1, client.getId());
+			
+			ps.execute();
+			ps.close();
+    	}
+    	
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }   
+    
+    
+    // revoir cette methode
+    
+    public int countClientsInCours(String date, int coachId, int coursId ) {
+    	
+    	int count = 0;
+    
+    	try {
+    		String sql = "SELECT COUNT(*) FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ? ";
+    		PreparedStatement ps = connection.prepareStatement(sql);   
+    		
+    		ps.setDate(1, Date.valueOf(date));
+    		ps.setLong(2, coachId);
+    		ps.setLong(3, coursId);
+    		
+    		
+    		ResultSet rs = ps.executeQuery();
+			
+			
+			while (rs.next()) {
+				count ++;
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return count;
+    	
+    	
+    }
+    
+    
+    
+    
+    
     
 	
 	
