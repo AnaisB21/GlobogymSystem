@@ -1,11 +1,13 @@
 package fr.m2i.models;
 
+import java.util.Date;
+
 public class Cours {
 
 	//Champs
 	
-	private Long id;
-	private Long date;
+	private Long id, coachId, clientId;
+	private Date date;
 		
 	//Getters et Setters
 	
@@ -15,17 +17,33 @@ public class Cours {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(Long date) {
+	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Long getCoachId() {
+		return coachId;
+	}
+	public void setCoachId(Long coachId) {
+		this.coachId = coachId;
+	}
+	public Long getClientId() {
+		return clientId;
+	}
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 	
 	//Constructeur
 	
-	public Cours(Long id, Long date) {
+	public Cours(Long id, Date date, Long coachId, Long clientId) {
 		this.id = id;
 		this.date = date;
+		this.coachId = coachId;
+		this.clientId = clientId;
 	}
+	
 }
