@@ -8,36 +8,6 @@
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>accueil</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>Connexion</display-name>
-    <servlet-name>Connexion</servlet-name>
-    <servlet-class>fr.m2i.controllers.Connexion</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Connexion</servlet-name>
-    <url-pattern>/Connexion</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>Deconnexion</display-name>
-    <servlet-name>Deconnexion</servlet-name>
-    <servlet-class>fr.m2i.controllers.Deconnexion</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Deconnexion</servlet-name>
-    <url-pattern>/Deconnexion</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>GestionClients</display-name>
-    <servlet-name>GestionClients</servlet-name>
-    <servlet-class>fr.m2i.controllers.GestionClients</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GestionClients</servlet-name>
-    <url-pattern>/GestionClients</url-pattern>
-  </servlet-mapping>
 </web-app>

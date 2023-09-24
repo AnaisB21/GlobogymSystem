@@ -14,12 +14,15 @@ import java.util.List;
 import fr.m2i.models.Client;
 import fr.m2i.models.Coach;
 import fr.m2i.models.Cours;
+import fr.m2i.models.Utilisateur;
 
 
 
 public class GestBDD {
 	
 	public static Connection connection;
+	
+	public Utilisateur utilisateur;
 	
 	public void connection() {
 		
@@ -305,6 +308,71 @@ public class GestBDD {
     	return count;
     	
     }   
+    
+    public Utilisateur findUser(String email, String motdepasse){	
+    	
+		try {
+			String SQL = "SELECT * FROM utilisateur WHERE email = ? AND motdepasse = ?";
+			PreparedStatement ps;
+			ps = connection.prepareStatement(SQL);
+			ps.setString(1, email);
+			ps.setString(2, motdepasse);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				utilisateur = new Utilisateur(rs.getLong("id"), rs.getString("email"), rs.getString("motdepasse"));
+			}
+			
+			ps.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return utilisateur;
+	}
+	
+    
+public boolean userExist(String email, String motdepasse) {
+		
+		boolean exist = false ;
+		
+		
+		try {
+			String SQL = "SELECT * FROM utilisateur WHERE email = ? AND motdepasse = ?";
+			PreparedStatement ps = connection.prepareStatement(SQL);
+			
+			ps.setString(1, email);
+			ps.setString(2, motdepasse);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (!rs.isBeforeFirst() ) {    
+			    System.out.println("No data");
+			} 
+			else {
+				System.out.println("There is data"); 
+				exist = true;
+			}
+			
+			
+			System.out.println(exist);
+
+			
+			ps.close();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return exist;
+		
+		
+	}
 	
 	
 }

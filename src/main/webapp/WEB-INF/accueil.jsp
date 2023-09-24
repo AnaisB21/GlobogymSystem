@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 
@@ -13,6 +14,12 @@
 <body>
 	<!-- utilisation des jspl pour inclure automatique un menu -->
 	<jsp:include page="./menu.jsp"></jsp:include>
+	
+	<c:if test="${sessionScope['sessionUser'] != null}">
+    Bonjour ${sessionScope['sessionUser'].email}
+    <br>
+    <a href="deconnexion">Se Deconnecter</a>
+	</c:if>
 	
 	<h1>Bienvenue</h1> 
 	<br>

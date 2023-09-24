@@ -17,15 +17,15 @@
 
 	<fieldset>
 			<legend id="titreLegende"> Veuillez vous identifier</legend>
-            <form action="./Accueil" method="POST"> 
+            <form action="./accueil" method="POST"> 
                 <div>
                     <label for="inpEmail">Email : </label>
                     <input type="text" name="email" id="inpEmail" placeholder="Inscrivez votre email" required>
                 </div>
 
                 <div>
-                    <label for="inpPassword">Mot de passe: </label>
-                    <input type="password" name="password" id="inpPassword" placeholder="Inscrivez votre mot de passe" required>
+                    <label for="inpMotdepasse">Mot de passe: </label>
+                    <input type="password" name="motdepasse" id="inpMotdepasse" placeholder="Inscrivez votre mot de passe" required>
                 </div>
 
                 <div>
