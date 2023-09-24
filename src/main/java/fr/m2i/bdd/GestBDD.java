@@ -277,19 +277,17 @@ public class GestBDD {
     }   
     
     
-    // revoir cette methode
-    
-    public int countClientsInCours(String date, int coachId, int coursId ) {
+    public int countClientsInCours(String date, int coachId, int courstypeId ) {
     	
     	int count = 0;
     
     	try {
-    		String sql = "SELECT COUNT(*) FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ? ";
+    		String sql = "SELECT * FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ?";
     		PreparedStatement ps = connection.prepareStatement(sql);   
     		
     		ps.setDate(1, Date.valueOf(date));
     		ps.setLong(2, coachId);
-    		ps.setLong(3, coursId);
+    		ps.setLong(3, courstypeId);
     		
     		
     		ResultSet rs = ps.executeQuery();
@@ -306,14 +304,7 @@ public class GestBDD {
     	
     	return count;
     	
-    	
-    }
-    
-    
-    
-    
-    
-    
+    }   
 	
 	
 }
