@@ -27,7 +27,7 @@ public class Accueil extends HttpServlet {
 		// TODO Auto-generated method stub
 		GestBDD bdd = new GestBDD();
 		bdd.connection();
-		bdd.getAllClients();
+		
 		request.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
