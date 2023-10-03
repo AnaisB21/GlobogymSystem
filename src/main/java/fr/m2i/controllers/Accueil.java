@@ -43,8 +43,10 @@ public class Accueil extends HttpServlet {
 			request.getSession().setAttribute("sessionUser", sessionUser);
 		}
 		else {
-			request.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+			request.setAttribute("invalide", "Votre mot de passe ou email est erronée");
+			request.getServletContext().getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
 		}
+			
 		bdd.close();
 
 		doGet(request, response);

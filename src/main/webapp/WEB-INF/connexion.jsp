@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+ 
 <!DOCTYPE html>
 <html>
 
@@ -15,6 +18,9 @@
 	<jsp:include page="./_menu.jsp"></jsp:include>
 
 	<h1>Globogym System</h1>
+	
+	<p><c:out value="${invalide}"></c:out></p>
+	
 
 	<fieldset>
 			<legend id="titreLegende"> Veuillez vous identifier</legend>
