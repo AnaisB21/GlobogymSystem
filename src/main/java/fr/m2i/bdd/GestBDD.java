@@ -14,12 +14,15 @@ import java.util.List;
 import fr.m2i.models.Client;
 import fr.m2i.models.Coach;
 import fr.m2i.models.Cours;
+import fr.m2i.models.Utilisateur;
 
 
 
 public class GestBDD {
 	
 	public static Connection connection;
+	
+	public Utilisateur utilisateur;
 	
 	public void connection() {
 		
@@ -156,7 +159,9 @@ public class GestBDD {
   	  			Long id = rs.getLong("id");
   	  			Long coachId = rs.getLong("coach_id");
   	  			Long clientId = rs.getLong("client_id");
-  	  			Cours cours = new Cours(id, date, coachId, clientId);
+  	  			Long courstypeId = rs.getLong("courstype_id");
+  	  			
+  	  			Cours cours = new Cours(id, date, coachId, clientId, courstypeId);
   	  			listeCours.add(cours);
   	  		}
           
@@ -172,6 +177,7 @@ public class GestBDD {
   	  // Print the list to debug
   	  	for (Cours element : listeCours) {
   	  		System.out.println(element.getDate());
+  	  		System.out.println(element.getCourstypeId());
   	  	}
   	
   	  	return listeCours;
@@ -217,16 +223,18 @@ public class GestBDD {
 		}
     }
     
-    public void addCours(String date, int coachId, int clientId) {
+    public void addCours(String date, int coachId, int clientId, int courstypeId) {
     	
     	try {
-			String sql = "INSERT INTO cours (date, coach_id, client_id) VALUES (?, ?, ?) ";
+			String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
 			
 			PreparedStatement ps = connection.prepareStatement (sql);
 			
 			ps.setDate(1, Date.valueOf(date));
 			ps.setLong(2,coachId);
 			ps.setLong(3,clientId);
+			ps.setLong(4,courstypeId);
+			
 			
 			
 			ps.execute();
@@ -237,6 +245,135 @@ public class GestBDD {
 		}
     }
     
+    public void addClientToCours(Client client, Cours cours) {
+    	try {
+    		String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setDate(1, (Date) cours.getDate());
+			ps.setLong(2, cours.getCoachId());
+			ps.setLong(3, client.getId());
+			ps.setLong(4, cours.getCourstypeId());
+			
+			ps.execute();
+			ps.close();
+    	}
+    	
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }   
+    
+    public void removeClientFromCours(Client client, Cours cours) {
+    	try {
+    		String sql = "DELETE FROM cours WHERE client_id = ? ";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setLong(1, client.getId());
+			
+			ps.execute();
+			ps.close();
+    	}
+    	
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }   
+    
+    
+    public int countClientsInCours(String date, int coachId, int courstypeId ) {
+    	
+    	int count = 0;
+    
+    	try {
+    		String sql = "SELECT * FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ?";
+    		PreparedStatement ps = connection.prepareStatement(sql);   
+    		
+    		ps.setDate(1, Date.valueOf(date));
+    		ps.setLong(2, coachId);
+    		ps.setLong(3, courstypeId);
+    		
+    		
+    		ResultSet rs = ps.executeQuery();
+			
+			
+			while (rs.next()) {
+				count ++;
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return count;
+    	
+    }   
+    
+    public Utilisateur findUser(String email, String motdepasse){	
+    	
+		try {
+			String SQL = "SELECT * FROM utilisateur WHERE email = ? AND motdepasse = ?";
+			PreparedStatement ps;
+			ps = connection.prepareStatement(SQL);
+			ps.setString(1, email);
+			ps.setString(2, motdepasse);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				utilisateur = new Utilisateur(rs.getLong("id"), rs.getString("email"), rs.getString("motdepasse"));
+			}
+			
+			ps.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return utilisateur;
+	}
+	
+    
+public boolean userExist(String email, String motdepasse) {
+		
+		boolean exist = false ;
+		
+		
+		try {
+			String SQL = "SELECT * FROM utilisateur WHERE email = ? AND motdepasse = ?";
+			PreparedStatement ps = connection.prepareStatement(SQL);
+			
+			ps.setString(1, email);
+			ps.setString(2, motdepasse);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (!rs.isBeforeFirst() ) {    
+			    System.out.println("No data");
+			} 
+			else {
+				System.out.println("There is data"); 
+				exist = true;
+			}
+			
+			
+			System.out.println(exist);
+
+			
+			ps.close();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return exist;
+		
+		
+	}
 	
 	
 }
