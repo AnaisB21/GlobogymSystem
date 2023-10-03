@@ -7,11 +7,12 @@
 	<meta charset="UTF-8">
 	<title>Connexion</title>
 	<link href="./style.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
 	<!-- utilisation des jspl pour inclure automatique un menu -->
-	<jsp:include page="./menu.jsp"></jsp:include>
+	<jsp:include page="./_menu.jsp"></jsp:include>
 
 	<h1>Globogym System</h1>
 
@@ -27,6 +28,7 @@
                     <label for="inpMotdepasse">Mot de passe: </label>
                     <input type="password" name="motdepasse" id="inpMotdepasse" placeholder="Inscrivez votre mot de passe" required>
                 </div>
+
 
                 <div>
                     <input type="submit" value="Se connecter" id="bouton">
