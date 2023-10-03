@@ -16,6 +16,7 @@ public class Client {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNom() {
 		return nom;
 	}

@@ -22,6 +22,12 @@
 	</c:if>
 	
 	<h1>Bienvenue</h1> 
+	
+	
+	<c:if test="${not (requestScope['user1']ne null)}">
+			Vous êtes connecté sous le nom ${sessionScope["user1"].nomUser}<br>
+			Votre identifiant est ${sessionScope["user1"].mailUser} <br>
+		</c:if>
 	<br>
 	<br>
 	

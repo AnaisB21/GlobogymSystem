@@ -30,10 +30,10 @@ public class GestBDD {
 	        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 	        
 	        //Connexion Adrien
-	        connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/bddglobogym", "root", "root");
+	        //connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/bddglobogym", "root", "root");
 	        
 	        //Connexion Anaïs
-	        // connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddglobogym","root", null);
+	        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddglobogym","root", null);
 	        
 	        
 	        System.out.println("Connexion ok....");
@@ -76,7 +76,7 @@ public class GestBDD {
     	List <Client> listeClients = new ArrayList<Client>();
            
   	  try {
-          
+  		  
           Statement stmt = connection.createStatement();            
           ResultSet rs = stmt.executeQuery("select * from client");
              
@@ -87,6 +87,7 @@ public class GestBDD {
                   Client client = new Client(id, nom, prenom);
                   listeClients.add(client);
           }
+          
           
           rs.close();
           stmt.close();
