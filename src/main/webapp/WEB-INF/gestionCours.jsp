@@ -15,5 +15,4 @@
 	<jsp:include page="./_menu.jsp"></jsp:include>
 	
 </body>
-
 </html>

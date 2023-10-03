@@ -29,6 +29,7 @@
                     <input type="password" name="motdepasse" id="inpMotdepasse" placeholder="Inscrivez votre mot de passe" required>
                 </div>
 
+
                 <div>
                     <input type="submit" value="Se connecter" id="bouton">
                 </div>
