@@ -1,62 +1,54 @@
 package fr.m2i.controllers;
 
+import java.io.IOException;
+import java.util.List;
+
+import fr.m2i.bdd.GestBDD;
+import fr.m2i.models.Coach;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
-import fr.m2i.bdd.GestBDD;
-import fr.m2i.models.Client;
 
-@WebServlet("/gestionclients")
-public class GestionClients extends HttpServlet {
+@WebServlet("/gestioncoachs")
+public class GestionCoachs extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-	private final String VUE = "/WEB-INF/gestionClients.jsp";   
-   
+	
+	private final String VUE = "/WEB-INF/gestionCoachs.jsp";   
+	   
 	private GestBDD bdd;
 	
-    public GestionClients() {
+    public GestionCoachs() {
         super();
         this.bdd=new GestBDD();
        
     }
-
-	
+    
+ 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		bdd.connection();
-	
-	
-		List<Client> listeClients = bdd.getAllClients();
+
+		List<Coach> listeCoaches = bdd.getAllCoaches();
 		
-		request.setAttribute("listeClients", listeClients); //je stocke la liste en tant qu'attribut de la requete
+		request.setAttribute("listeCoaches", listeCoaches); //je stocke la liste en tant qu'attribut de la requete
 		
 		request.getRequestDispatcher(VUE).forward(request, response);
-		
-		
-		
-	}	
+	}
+
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-		System.out.println("coucou");	
+		
+		System.out.println("coucou POST");
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
 		
-		bdd.addClient(nom,prenom);
+		bdd.addCoach(nom,prenom);
 			
 		doGet(request, response);
 	}
-			
-			
-		
 
-		
-
-	
-	
 }
