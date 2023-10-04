@@ -31,10 +31,20 @@ public class Coach {
 					
 	//Constructeur
 	
+	public Coach () {
+		
+	}
+	
 	public Coach(Long id, String nom, String prenom) {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;		
 	} 
+	
+	public Coach(String nom, String prenom) {
+		this.nom = nom;
+		this.prenom = prenom;		
+	}
+	
 	
 }
