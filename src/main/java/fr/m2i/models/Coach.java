@@ -1,5 +1,7 @@
 package fr.m2i.models;
 
+import java.util.List;
+
 public class Coach {
 
 	//Champs
@@ -39,12 +41,17 @@ public class Coach {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;		
+	}
+	public Coach() {
+		// TODO Auto-generated constructor stub
 	} 
 	
+
 	public Coach(String nom, String prenom) {
 		this.nom = nom;
 		this.prenom = prenom;		
 	}
 	
 	
+
 }

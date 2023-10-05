@@ -14,6 +14,7 @@ import java.util.List;
 import fr.m2i.models.Client;
 import fr.m2i.models.Coach;
 import fr.m2i.models.Cours;
+import fr.m2i.models.CoursType;
 import fr.m2i.models.Utilisateur;
 
 
@@ -21,6 +22,7 @@ import fr.m2i.models.Utilisateur;
 public class GestBDD {
 	
 	public static Connection connection;
+	public static List <Coach> listeCoaches = new ArrayList<Coach>();
 	
 	public Utilisateur utilisateur;
 	
@@ -30,12 +32,15 @@ public class GestBDD {
 	        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 	        
 	        //Connexion Adrien
-	        //connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/bddglobogym", "root", "root");
+	        connection = DriverManager.getConnection("jdbc:mysql://localhost:8889/bddglobogym", "root", "root");
 	        
 	        //Connexion Anaïs
-	        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddglobogym","root", null);
-        
-	        System.out.println("Connexion ok....");	        
+	        // connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddglobogym","root", null);
+	        
+	        
+	        System.out.println("Connexion ok....");
+	        
+
 	        }
 	        	        
 		catch (SQLException e) {	    
@@ -63,6 +68,40 @@ public class GestBDD {
 	}
 	
 	
+
+	public List <CoursType> getAllCoursType() {
+		
+		List <CoursType> listeCoursType = new ArrayList <CoursType>();
+		
+	 	  try {
+	  		  
+	          Statement stmt = connection.createStatement();            
+	          ResultSet rs = stmt.executeQuery("select * from courstype");
+	             
+	          while (rs.next()) {
+	                  String nom = rs.getString("name");
+	                  Long id = rs.getLong("id");
+	                  CoursType coursType = new CoursType(id, nom);
+	                  listeCoursType.add(coursType);
+	          }
+	          
+	          rs.close();
+	          stmt.close();
+	         
+	          
+	  	  } catch (SQLException e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		    }
+	  	  
+	  	  // Print the list to debug
+	  
+	  	return listeCoursType;
+		
+		
+	}
+	
+
 	//----------------CREATE----------------
 
     
@@ -168,6 +207,7 @@ public class GestBDD {
     }
     
     
+
     public List<Client> getAllClients () {       
         
     	List <Client> listeClients = new ArrayList<Client>();
@@ -192,10 +232,6 @@ public class GestBDD {
 	        e.printStackTrace();
 	    }
 
-  	for (Client element : listeClients) {
-  	     System.out.println(element.getNom());
-  	    }
-  	
   	return listeClients;
    
     }
@@ -203,7 +239,6 @@ public class GestBDD {
 
     public List<Coach> getAllCoaches () {       
     
-    	List <Coach> listeCoaches = new ArrayList<Coach>();
        
     	try {     
     		Statement stmt = connection.createStatement();            
@@ -230,6 +265,7 @@ public class GestBDD {
 	
     	return listeCoaches;	  
 }
+
     
     public List<Cours> getAllCours () {       
         
@@ -238,19 +274,19 @@ public class GestBDD {
   	  	try {
           
   	  		Statement stmt = connection.createStatement();            
-  	  		ResultSet rs = stmt.executeQuery("select * from cours");
+  	  		ResultSet rs = stmt.executeQuery("SELECT date, coach_id, courstype_id from cours GROUP BY date, coach_id, courstype_id;");
              
   	  		while (rs.next()) {
   	  			Date date = rs.getDate("date");
-  	  			Long id = rs.getLong("id");
   	  			Long coachId = rs.getLong("coach_id");
-  	  			Long clientId = rs.getLong("client_id");
   	  			Long courstypeId = rs.getLong("courstype_id");
-  	  			
-  	  			Cours cours = new Cours(id, date, coachId, clientId, courstypeId);
-  	  			listeCours.add(cours);
-  	  		}
-          
+  	  	
+  				Cours cours = new Cours(date, coachId, courstypeId);
+  			
+  		  	  	listeCours.add(cours);
+  				
+	  		}	
+  	  		
   	  		rs.close();
   	  		stmt.close();
                    
@@ -272,6 +308,7 @@ public class GestBDD {
     public void updateClient (Client client) throws SQLException {
     	
     	try {
+
     		String sql = "UPDATE client SET nom=?, prenom=? WHERE id=?; ";		
     		PreparedStatement ps = connection.prepareStatement (sql);
     		
@@ -281,6 +318,7 @@ public class GestBDD {
 
     		ps.execute();
     		ps.close();
+        
     	} catch (SQLException e) {
     		e.printStackTrace();
         }   
@@ -372,6 +410,7 @@ public class GestBDD {
     	return count;
     	
     }   
+    
     
     public Utilisateur findUser(String email, String motdepasse){	
     	

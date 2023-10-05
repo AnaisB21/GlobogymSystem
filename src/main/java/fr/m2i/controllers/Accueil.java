@@ -27,6 +27,8 @@ public class Accueil extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		GestBDD bdd = new GestBDD();
+		bdd.connection();
 		request.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
