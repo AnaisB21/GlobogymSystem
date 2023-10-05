@@ -40,22 +40,19 @@ public class GestBDD {
 	        
 	        System.out.println("Connexion ok....");
 	        
+
 	        }
 	        	        
-		catch (SQLException e) {
-	        // TODO Auto-generated catch block
+		catch (SQLException e) {	    
 	        e.printStackTrace();
-			}
-		
+			}		
 	}
-
 	
 	public static Connection getConnection() {
 		if (connection == null) 
 			new GestBDD();
 		return connection;
-	}
-	
+	}	
 	
 	public void close() {
 		if (GestBDD.connection != null) {
@@ -67,12 +64,11 @@ public class GestBDD {
 		        // TODO Auto-generated catch block
 		        e.printStackTrace();
 		    }
-		}
-		
+		}		
 	}
 	
-	// GET ALL
 	
+
 	public List <CoursType> getAllCoursType() {
 		
 		List <CoursType> listeCoursType = new ArrayList <CoursType>();
@@ -105,12 +101,118 @@ public class GestBDD {
 		
 	}
 	
+
+	//----------------CREATE----------------
+
+    
+    public void addClient(String nom, String prenom) {
+    	
+    	try {
+			String sql = "INSERT INTO client (nom, prenom) VALUES (?, ?) ";
+			
+			PreparedStatement ps = connection.prepareStatement (sql);
+			
+			ps.setString(1, nom);
+			ps.setString(2, prenom);
+			
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+    }
+    
+    public void addCoach(String nom, String prenom) {
+    	
+    	try {
+			String sql = "INSERT INTO coach (nom, prenom) VALUES (?, ?) ";
+			
+			PreparedStatement ps = connection.prepareStatement (sql);
+			
+			ps.setString(1, nom);
+			ps.setString(2, prenom);
+			
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+    }
+    
+    public void addCours(String date, int coachId, int clientId, int courstypeId) {
+    	
+    	try {
+			String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+			
+			PreparedStatement ps = connection.prepareStatement (sql);
+			
+			ps.setDate(1, Date.valueOf(date));
+			ps.setLong(2,coachId);
+			ps.setLong(3,clientId);
+			ps.setLong(4,courstypeId);
+
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+    }
+    
+    public void addClientToCours(Client client, Cours cours) {
+    	try {
+    		String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setDate(1, (Date) cours.getDate());
+			ps.setLong(2, cours.getCoachId());
+			ps.setLong(3, client.getId());
+			ps.setLong(4, cours.getCourstypeId());
+			
+			ps.execute();
+			ps.close();
+    	}
+    	
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }   
+	
+	
+  //----------------READ----------------
+    
+    public Client selectClient (Long id) {
+    	
+    	Client client = null;
+    			
+    	try {
+    		String sql = "SELECT * FROM client WHERE id =?";
+    		PreparedStatement ps = connection.prepareStatement (sql);
+    		
+    		ps.setLong(1, id);
+    		
+    		ResultSet rs= ps.executeQuery();
+    		
+    		while(rs.next()) {
+    			String nom = rs.getString("nom");
+    			String prenom = rs.getString("prenom");
+    			client = new Client(id, nom, prenom);
+    			
+    			System.out.println(client.getId()+ client.getNom()+client.getPrenom());
+    		}
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+        }
+        return client;
+    	
+    }
+    
+    
+
     public List<Client> getAllClients () {       
         
     	List <Client> listeClients = new ArrayList<Client>();
            
-  	  try {
-  		  
+  	  try { 		  
           Statement stmt = connection.createStatement();            
           ResultSet rs = stmt.executeQuery("select * from client");
              
@@ -121,30 +223,24 @@ public class GestBDD {
                   Client client = new Client(id, nom, prenom);
                   listeClients.add(client);
           }
-          
-          
+                    
           rs.close();
           stmt.close();
          
           
-  	  } catch (SQLException e) {
-	        // TODO Auto-generated catch block
+  	  	} catch (SQLException e) {	  
 	        e.printStackTrace();
 	    }
-  	  
-  	  // Print the list to debug
-  
+
   	return listeClients;
-  	  
-  	  
+   
     }
     
 
     public List<Coach> getAllCoaches () {       
     
        
-    	try {
-      
+    	try {     
     		Statement stmt = connection.createStatement();            
     		ResultSet rs = stmt.executeQuery("select * from coach");
          
@@ -158,21 +254,16 @@ public class GestBDD {
       
     		rs.close();
     		stmt.close();
-     
-      
-    	} catch (SQLException e) {
-    		// TODO Auto-generated catch block
+          
+    	} catch (SQLException e) {    	
     		e.printStackTrace();
     }
-	  
-    	// Print the list to debug
+
     	for (Coach element : listeCoaches) {
     		System.out.println(element.getNom());
     		}
 	
-    	return listeCoaches;
-	  
-	  
+    	return listeCoaches;	  
 }
 
     
@@ -198,102 +289,80 @@ public class GestBDD {
   	  		
   	  		rs.close();
   	  		stmt.close();
-         
-          
+                   
   	  	} catch (SQLException e) {
-	        // TODO Auto-generated catch block
   	  		e.printStackTrace();
   	  	}
-  	  
-  	  // Print the list to debug
+  	    	 
   	  	for (Cours element : listeCours) {
   	  		System.out.println(element.getDate());
   	  		System.out.println(element.getCourstypeId());
   	  	}
   	
-  	  	return listeCours;
-  	
-  	  
+  	  	return listeCours; 	  
     }
+ 
     
-    // ADD METHOD
-    
-    public void addClient(String nom, String prenom) {
+  //----------------UPDATE----------------
+
+    public void updateClient (Client client) throws SQLException {
     	
     	try {
-			String sql = "INSERT INTO client (nom, prenom) VALUES (?, ?) ";
-			
-			PreparedStatement ps = connection.prepareStatement (sql);
-			
-			ps.setString(1, nom);
-			ps.setString(2, prenom);
-			
-			ps.execute();
-			ps.close();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-    }
-    
-    public void addCoach(String nom, String prenom) {
-    	
-    	try {
-			String sql = "INSERT INTO coach (nom, prenom) VALUES (?, ?) ";
-			
-			PreparedStatement ps = connection.prepareStatement (sql);
-			
-			ps.setString(1, nom);
-			ps.setString(2, prenom);
-			
-			ps.execute();
-			ps.close();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-    }
-    
-    public void addCours(String date, int coachId, int clientId, int courstypeId) {
-    	
-    	try {
-			String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
-			
-			PreparedStatement ps = connection.prepareStatement (sql);
-			
-			ps.setDate(1, Date.valueOf(date));
-			ps.setLong(2,coachId);
-			ps.setLong(3,clientId);
-			ps.setLong(4,courstypeId);
-			
-			
-			ps.execute();
-			ps.close();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-    }
-    
-    public void addClientToCours(Client client, Cours cours) {
-    	try {
-    		String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+
+    		String sql = "UPDATE client SET nom=?, prenom=? WHERE id=?; ";		
     		PreparedStatement ps = connection.prepareStatement (sql);
     		
-    		ps.setDate(1, (Date) cours.getDate());
-			ps.setLong(2, cours.getCoachId());
-			ps.setLong(3, client.getId());
-			ps.setLong(4, cours.getCourstypeId());
-			
-			ps.execute();
-			ps.close();
-    	}
-    	
-    	catch (SQLException e) {
+    		ps.setString(1, client.getNom());
+    		ps.setString(2, client.getPrenom());
+    		ps.setLong(3,client.getId());
+
+    		ps.execute();
+    		ps.close();
+        
+    	} catch (SQLException e) {
     		e.printStackTrace();
-    	}
-    }   
+        }   
+    	
+    }
+     
     
+  //----------------DELETE----------------
+ 
+   public void deleteClient(long id) {
+	   try {
+		   String sql="DELETE FROM client WHERE id=?";
+		   PreparedStatement ps = connection.prepareStatement (sql);
+		   
+		   ps.setLong(1, id);
+		   
+		   ps.execute();
+		   ps.close();
+		   
+	   } 
+	   
+	   catch (SQLException e) {
+		   e.printStackTrace();
+   		}
+   }
+   
+     
+   public void deleteCoach(long id) {
+	   try {
+		   String sql="DELETE FROM coach WHERE id=?";
+		   PreparedStatement ps = connection.prepareStatement (sql);
+		   
+		   ps.setLong(1, id);
+		   
+		   ps.execute();
+		   ps.close();
+		   
+	   } 	   
+	   catch (SQLException e) {
+		   e.printStackTrace();
+   		}
+   }
+ 
+   
     public void removeClientFromCours(Client client, Cours cours) {
     	try {
     		String sql = "DELETE FROM cours WHERE client_id = ? ";
@@ -310,6 +379,8 @@ public class GestBDD {
     	}
     }   
     
+    
+   //  
     
     public int countClientsInCours(String date, int coachId, int courstypeId ) {
     	
@@ -405,6 +476,9 @@ public boolean userExist(String email, String motdepasse) {
 		
 		
 	}
+
+
+
 	
 	
 }

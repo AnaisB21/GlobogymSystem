@@ -31,9 +31,18 @@ public class Client {
 	}
 				
 	//Constructeur
+	
+	public Client() {
+		
+	}
 		
 	public Client(Long id, String nom, String prenom) {
 		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+	
+	public Client(String nom, String prenom) {
 		this.nom = nom;
 		this.prenom = prenom;
 	}

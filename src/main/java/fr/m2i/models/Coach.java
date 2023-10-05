@@ -33,6 +33,10 @@ public class Coach {
 					
 	//Constructeur
 	
+	public Coach () {
+		
+	}
+	
 	public Coach(Long id, String nom, String prenom) {
 		this.id = id;
 		this.nom = nom;
@@ -42,5 +46,12 @@ public class Coach {
 		// TODO Auto-generated constructor stub
 	} 
 	
-   
+
+	public Coach(String nom, String prenom) {
+		this.nom = nom;
+		this.prenom = prenom;		
+	}
+	
+	
+
 }
