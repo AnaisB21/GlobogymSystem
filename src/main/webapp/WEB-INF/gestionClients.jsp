@@ -18,6 +18,7 @@
 
 	<h1>Liste des clients</h1>
     
+    <a href="<%=request.getContextPath()%>/new" class="btn btn-success">Ajouter</a>
  
     <table class="table">
     	<thead class="bg-light">
@@ -27,7 +28,7 @@
 	            <th>Prénom</th>
 	            <th>Action</th>
 	        </tr>
-        <thead>
+        </thead>
         <tbody>
   			<c:forEach var="client" items="${listeClients}">
 	            <tr>
@@ -39,6 +40,10 @@
 	                </td>
 	                <td>
 	                	<c:out value="${client.prenom}"/>
+	                </td>	                
+	                <td>
+	                	<a href="edit?id=${client.id}"> Modifier </a> 
+	                	<a href="delete?id=${client.id}"> Supprimer </a>
 	                </td>
 	                
 	            </tr>
@@ -47,26 +52,7 @@
     </table>
     
     
-    <fieldset>
-			<legend id="titreLegende"> Tous les champs sont obligatoires</legend>
-            <form action="./gestionclients" method="POST"> 
-                <div>
-                    <label for="inpNom">Nom : </label>
-                    <input type="text" name="nom" required>
-                </div>
-
-                <div>
-                    <label for="inpPrenom">Prénom : </label>
-                    <input type="text" name="prenom" required>
-                </div>
-
-
-                <div>
-                    <input type="submit" value="Ajouter" id="bouton">
-                </div>
-            </form>
-
-	</fieldset>
+    
 
 </body>
 </html>

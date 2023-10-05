@@ -1,6 +1,7 @@
 package fr.m2i.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import fr.m2i.bdd.GestBDD;
@@ -30,6 +31,17 @@ public class GestionCoachs extends HttpServlet {
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String action = request.getParameter("action");
+
+	    if ("deleteCoach".equals(action)) {
+	        try {
+	            deleteCoach(request, response);
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    } else {
+		
+
 		bdd.connection();
 
 		List<Coach> listeCoaches = bdd.getAllCoaches();
@@ -37,6 +49,8 @@ public class GestionCoachs extends HttpServlet {
 		request.setAttribute("listeCoaches", listeCoaches); //je stocke la liste en tant qu'attribut de la requete
 		
 		request.getRequestDispatcher(VUE).forward(request, response);
+		
+	    }
 	}
 
 	
@@ -49,6 +63,16 @@ public class GestionCoachs extends HttpServlet {
 		bdd.addCoach(nom,prenom);
 			
 		doGet(request, response);
+	}
+	
+	
+private void deleteCoach(HttpServletRequest request, HttpServletResponse response)	 throws SQLException, IOException{
+		
+		
+		long id=Long.parseLong(request.getParameter("id"));
+		bdd.deleteCoach(id);
+		
+		response.sendRedirect(request.getContextPath() + "/gestioncoachs");
 	}
 
 }

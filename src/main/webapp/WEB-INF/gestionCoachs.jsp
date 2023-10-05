@@ -41,7 +41,9 @@
 	                <td>
 	                	<c:out value="${coach.prenom}"/>
 	                </td>
-	                
+	                <td>
+	                	<a href="./gestioncoachs?action=deleteCoach&id=${coach.id }" class="btn btn-danger">Supprimer</a>
+	                </td>
 	            </tr>
         	</c:forEach>
         </tbody>        
