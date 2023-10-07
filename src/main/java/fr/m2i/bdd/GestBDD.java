@@ -22,7 +22,6 @@ import fr.m2i.models.Utilisateur;
 public class GestBDD {
 	
 	public static Connection connection;
-	public static List <Coach> listeCoaches = new ArrayList<Coach>();
 	
 	public Utilisateur utilisateur;
 	
@@ -171,6 +170,28 @@ public class GestBDD {
     	
     }
     
+    public Coach selectCoach(Long id) {
+        Coach coach = null;
+
+        try {
+            String sql = "SELECT * FROM coach WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setLong(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String nom = rs.getString("nom");
+                String prenom = rs.getString("prenom");
+                coach = new Coach(id, nom, prenom);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return coach;
+    }
+    
     
 
     public List<Client> getAllClients () {       
@@ -202,30 +223,32 @@ public class GestBDD {
     }
     
 
-    public List<Coach> getAllCoaches () {       
+    public List<Coach> getAllCoaches() {
+        List<Coach> listeCoaches = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM coach");
+
+            while (rs.next()) {
+                String nom = rs.getString("nom");
+                String prenom = rs.getString("prenom");
+                Long id = rs.getLong("id");
+                Coach coach = new Coach(id, nom, prenom);
+                listeCoaches.add(coach);
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listeCoaches;
+    }      
     
        
-    	try {     
-    		Statement stmt = connection.createStatement();            
-    		ResultSet rs = stmt.executeQuery("select * from coach");
-         
-    		while (rs.next()) {
-    			String nom = rs.getString("nom");
-    			String prenom = rs.getString("prenom");
-    			Long id = rs.getLong("id");
-    			Coach coach = new Coach(id, nom, prenom);
-    			listeCoaches.add(coach);
-    		}
-      
-    		rs.close();
-    		stmt.close();
-          
-    	} catch (SQLException e) {    	
-    		e.printStackTrace();
-    }
-	
-    	return listeCoaches;	  
-}
+    
     
 public List <CoursType> getAllCoursType() {
 		
@@ -314,6 +337,23 @@ public List <CoursType> getAllCoursType() {
         }   
     	
     }
+    
+    public void updateCoach(Long id, String nom, String prenom) throws SQLException {
+        try {
+            String sql = "UPDATE coach SET nom=?, prenom=? WHERE id=?; ";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, nom);
+            ps.setString(2, prenom);
+            ps.setLong(3, id);
+
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
      
     
   //----------------DELETE----------------
