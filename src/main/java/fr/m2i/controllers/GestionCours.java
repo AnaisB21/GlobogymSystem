@@ -27,6 +27,8 @@ public class GestionCours extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		bdd.connection();
+		
 		List<Cours> listeCours = bdd.getAllCours();
 		
 		List<Coach> listeCoaches = bdd.getAllCoaches();

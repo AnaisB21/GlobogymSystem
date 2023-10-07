@@ -42,9 +42,6 @@ public class Coach {
 		this.nom = nom;
 		this.prenom = prenom;		
 	}
-	public Coach() {
-		// TODO Auto-generated constructor stub
-	} 
 	
 
 	public Coach(String nom, String prenom) {

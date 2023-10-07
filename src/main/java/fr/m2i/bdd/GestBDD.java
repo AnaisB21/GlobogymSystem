@@ -67,40 +67,6 @@ public class GestBDD {
 		}		
 	}
 	
-	
-
-	public List <CoursType> getAllCoursType() {
-		
-		List <CoursType> listeCoursType = new ArrayList <CoursType>();
-		
-	 	  try {
-	  		  
-	          Statement stmt = connection.createStatement();            
-	          ResultSet rs = stmt.executeQuery("select * from courstype");
-	             
-	          while (rs.next()) {
-	                  String nom = rs.getString("name");
-	                  Long id = rs.getLong("id");
-	                  CoursType coursType = new CoursType(id, nom);
-	                  listeCoursType.add(coursType);
-	          }
-	          
-	          rs.close();
-	          stmt.close();
-	         
-	          
-	  	  } catch (SQLException e) {
-		        // TODO Auto-generated catch block
-		        e.printStackTrace();
-		    }
-	  	  
-	  	  // Print the list to debug
-	  
-	  	return listeCoursType;
-		
-		
-	}
-	
 
 	//----------------CREATE----------------
 
@@ -197,7 +163,6 @@ public class GestBDD {
     			String prenom = rs.getString("prenom");
     			client = new Client(id, nom, prenom);
     			
-    			System.out.println(client.getId()+ client.getNom()+client.getPrenom());
     		}
     	} catch (SQLException e) {
     		e.printStackTrace();
@@ -258,13 +223,41 @@ public class GestBDD {
     	} catch (SQLException e) {    	
     		e.printStackTrace();
     }
-
-    	for (Coach element : listeCoaches) {
-    		System.out.println(element.getNom());
-    		}
 	
     	return listeCoaches;	  
 }
+    
+public List <CoursType> getAllCoursType() {
+		
+		List <CoursType> listeCoursType = new ArrayList <CoursType>();
+		
+	 	  try {
+	  		  
+	          Statement stmt = connection.createStatement();            
+	          ResultSet rs = stmt.executeQuery("select * from courstype");
+	             
+	          while (rs.next()) {
+	                  String nom = rs.getString("name");
+	                  Long id = rs.getLong("id");
+	                  CoursType coursType = new CoursType(id, nom);
+	                  listeCoursType.add(coursType);
+	          }
+	          
+	          rs.close();
+	          stmt.close();
+	         
+	          
+	  	  } catch (SQLException e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		    }
+	  	  
+	  	  // Print the list to debug
+	  
+	  	return listeCoursType;
+		
+		
+	}
 
     
     public List<Cours> getAllCours () {       
@@ -294,10 +287,7 @@ public class GestBDD {
   	  		e.printStackTrace();
   	  	}
   	    	 
-  	  	for (Cours element : listeCours) {
-  	  		System.out.println(element.getDate());
-  	  		System.out.println(element.getCourstypeId());
-  	  	}
+
   	
   	  	return listeCours; 	  
     }
@@ -305,16 +295,16 @@ public class GestBDD {
     
   //----------------UPDATE----------------
 
-    public void updateClient (Client client) throws SQLException {
+    public void updateClient (Long id, String nom, String prenom) throws SQLException {
     	
     	try {
 
     		String sql = "UPDATE client SET nom=?, prenom=? WHERE id=?; ";		
     		PreparedStatement ps = connection.prepareStatement (sql);
     		
-    		ps.setString(1, client.getNom());
-    		ps.setString(2, client.getPrenom());
-    		ps.setLong(3,client.getId());
+    		ps.setString(1, nom);
+    		ps.setString(2, prenom);
+    		ps.setLong(3,id);
 
     		ps.execute();
     		ps.close();
@@ -453,15 +443,11 @@ public boolean userExist(String email, String motdepasse) {
 			ResultSet rs = ps.executeQuery();
 			
 			if (!rs.isBeforeFirst() ) {    
-			    System.out.println("No data");
 			} 
 			else {
-				System.out.println("There is data"); 
 				exist = true;
 			}
 			
-			
-			System.out.println(exist);
 
 			
 			ps.close();

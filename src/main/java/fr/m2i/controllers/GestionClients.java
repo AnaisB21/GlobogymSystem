@@ -14,11 +14,12 @@ import java.util.List;
 import fr.m2i.bdd.GestBDD;
 import fr.m2i.models.Client;
 
-@WebServlet("/gestionclients")
+@WebServlet(urlPatterns= {"/gestionclients", "/gestionclients/new", "/gestionclients/insert", "/gestionclients/delete", "/gestionclients/edit", "/gestionclients/update"})
 public class GestionClients extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private final String VUE = "/WEB-INF/gestionClients.jsp";      
+	private final String VUE = "/WEB-INF/gestionClients.jsp";  
+	private final String FORM = "/WEB-INF/formulaireClient.jsp";
 	private GestBDD bdd;
 	
 	
@@ -41,19 +42,19 @@ public class GestionClients extends HttpServlet {
 		
 		try {
             switch (action) {
-                case "/new":
+                case "/gestionclients/new":
                     showNewForm(request, response);
                     break;
-                case "/insert":
+                case "/gestionclients/insert":
                     insertClient(request, response);
                     break;
-                case "/delete":
+                case "/gestionclients/delete":
                     deleteClient(request, response);
                     break;
-                case "/edit":
+                case "/gestionclients/edit":
                     showEditForm(request, response);
                     break;
-                case "/update":
+                case "/gestionclients/update":
                     updateClient(request, response);
                     break;
                 default:
@@ -77,24 +78,24 @@ public class GestionClients extends HttpServlet {
 		
 	
 	private void showNewForm (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("méthode showNewForm, ok");
-		//request.getRequestDispatcher("/WEB-INF/formulaireClient.jsp").forward(request, response);
+		request.getRequestDispatcher(FORM).forward(request, response);
 	}	
 		
 	
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)throws SQLException, ServletException, IOException {
 	
-		Long id=Long.parseLong(request.getParameter("id"));
-		System.out.println(id);		
+		Long id=Long.parseLong(request.getParameter("id"));	
 		Client existingClient = bdd.selectClient(id);
-		request.getRequestDispatcher("/WEB-INF/formulaireClient.jsp").forward(request, response);
 		request.setAttribute("client", existingClient);
+		request.getRequestDispatcher("/WEB-INF/formulaireClient.jsp").forward(request, response);
+		
 	}	
 		
 	private void insertClient(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException {	
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");		
 		bdd.addClient(nom, prenom);
+		response.sendRedirect(request.getContextPath() + "/gestionclients");
 	}	
 
 
@@ -103,9 +104,10 @@ public class GestionClients extends HttpServlet {
 		Long id = Long.parseLong(request.getParameter("id"));
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
-	
-		Client client = new Client(nom, prenom);
-		bdd.updateClient(client);		
+		
+		bdd.updateClient(id, nom, prenom);
+		
+		
 		response.sendRedirect(request.getContextPath() + "/gestionclients");
 	}		
 		
@@ -113,6 +115,7 @@ public class GestionClients extends HttpServlet {
 	private void deleteClient(HttpServletRequest request, HttpServletResponse response)	 throws SQLException, IOException{		
 		
 		Long id=Long.parseLong(request.getParameter("id"));
+		System.out.println(id);
 		bdd.deleteClient(id);		
 		response.sendRedirect(request.getContextPath() + "/gestionclients");
 	}

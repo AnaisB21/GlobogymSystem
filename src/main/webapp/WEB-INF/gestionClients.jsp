@@ -18,7 +18,7 @@
 
 	<h1>Liste des clients</h1>
     
-    <a href="<%=request.getContextPath()%>/new" class="btn btn-success">Ajouter</a>
+    <a href="gestionclients/new" class="btn btn-success">Ajouter</a>
  
     <table class="table">
     	<thead class="bg-light">
@@ -42,8 +42,8 @@
 	                	<c:out value="${client.prenom}"/>
 	                </td>	                
 	                <td>
-	                	<a href="edit?id=${client.id}"> Modifier </a> 
-	                	<a href="delete?id=${client.id}"> Supprimer </a>
+	                	<a href="gestionclients/edit?id=${client.id}"> Modifier </a> 
+	                	<a href="gestionclients/delete?id=${client.id}"> Supprimer </a>
 	                </td>
 	                
 	            </tr>
