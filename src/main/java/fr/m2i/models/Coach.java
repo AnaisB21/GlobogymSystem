@@ -1,6 +1,5 @@
 package fr.m2i.models;
 
-import java.util.List;
 
 public class Coach {
 
