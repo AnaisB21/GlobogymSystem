@@ -18,27 +18,37 @@
 	
 	<h1>Liste des cours</h1>
 	
+	<a href="gestioncours/new" class="btn btn-success">Ajouter</a>
+	
 	<table class="table">
     	<thead class="bg-light">
 	        <tr>
+	        	<th>Id</th>
 	            <th>Date</th>
 	            <th>Coach </th>
-	            <th>Cours Type ID</th>
+	            <th>Cours</th>
+	            <th>Action</th>
 	        </tr>
         <thead>
         <tbody>
   			<c:forEach var="cours" items="${listeCours}">
 	            <tr>
+	             	<td>
+	                	<c:out value="${cours.id}"/>
+	                </td>
 	                <td>
 	                	<c:out value="${cours.date}"/>
 	                </td>
 	                <td>
-	                	<c:out value="${cours.coach.nom} ${cours.coach.prenom}"/>
+	                	<c:out value="${cours.coach.prenom}"/>
 	                </td>
 	                <td>
 	                	<c:out value="${cours.coursType.nom}"/>
 	                </td>
-	     
+	                <td>
+                        <a href="gestioncours/delete?id=${cours.id}"> Supprimer </a>
+	                </td>
+	                
 	            </tr>
         	</c:forEach>
         </tbody>        

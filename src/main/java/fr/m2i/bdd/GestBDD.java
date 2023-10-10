@@ -104,18 +104,16 @@ public class GestBDD {
 		}
     }
     
-    public void addCours(String date, int coachId, int clientId, int courstypeId) {
+    public void addCours(String date, int coachId, int courstypeId) {
     	
     	try {
-			String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
+			String sql = "INSERT INTO cours (date, coach_id,  courstype_id) VALUES (?, ?, ?) ";
 			
 			PreparedStatement ps = connection.prepareStatement (sql);
 			
 			ps.setDate(1, Date.valueOf(date));
 			ps.setLong(2,coachId);
-			ps.setLong(3,clientId);
-			ps.setLong(4,courstypeId);
-
+			ps.setLong(3,courstypeId);
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {			
@@ -283,21 +281,24 @@ public List <CoursType> getAllCoursType() {
 	}
 
     
-    public List<Cours> getAllCours () {       
+    public List<Cours> getAllCours () {     
+    	
+
         
     	List <Cours> listeCours = new ArrayList<Cours>();
            
   	  	try {
           
   	  		Statement stmt = connection.createStatement();            
-  	  		ResultSet rs = stmt.executeQuery("SELECT date, coach_id, courstype_id from cours GROUP BY date, coach_id, courstype_id;");
+  	  		ResultSet rs = stmt.executeQuery("SELECT * FROM cours");
              
   	  		while (rs.next()) {
+  	  			Long id = rs.getLong("id");
   	  			Date date = rs.getDate("date");
   	  			Long coachId = rs.getLong("coach_id");
   	  			Long courstypeId = rs.getLong("courstype_id");
   	  	
-  				Cours cours = new Cours(date, coachId, courstypeId);
+  				Cours cours = new Cours(id, date, coachId, courstypeId);
   			
   		  	  	listeCours.add(cours);
   				
@@ -391,6 +392,25 @@ public List <CoursType> getAllCoursType() {
 		   e.printStackTrace();
    		}
    }
+   
+   public void deleteCours(long id) {
+	   
+	  
+	   try {
+		   String sql="DELETE FROM cours WHERE id=?";
+		   PreparedStatement ps = connection.prepareStatement (sql);
+		   
+		   ps.setLong(1, id);
+		   
+		   ps.execute();
+		   ps.close();
+		   
+	   } 	   
+	   catch (SQLException e) {
+		   e.printStackTrace();
+   		}
+   }
+   
  
    
     public void removeClientFromCours(Client client, Cours cours) {
