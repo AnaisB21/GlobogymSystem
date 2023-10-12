@@ -69,7 +69,6 @@ public class GestionCours extends HttpServlet {
 		
 		for (Cours cours : listeCours) {
 			
-			System.out.println(cours.getCoachId());
 			for (Coach coach : listeCoaches) {
 				if (cours.getCoachId() == coach.getId()) {
 					cours.setCoach(coach);

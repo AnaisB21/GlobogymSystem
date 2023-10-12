@@ -46,7 +46,8 @@
 	                	<c:out value="${cours.coursType.nom}"/>
 	                </td>
 	                <td>
-                        <a href="gestioncours/delete?id=${cours.id}"> Supprimer </a>
+                        <a href="gestioncours/delete?id=${cours.id}"> Supprimer le cours </a>
+                        <a href="gestionreservations/cours?id=${cours.id}"> Voir les reservations </a>
 	                </td>
 	                
 	            </tr>

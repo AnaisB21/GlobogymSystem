@@ -5,10 +5,6 @@
          src="https://img.freepik.com/vecteurs-premium/icone-calendrier-calendrier-logo-date-heure-icone_761928-109.jpg"
          width="50" height="50"/>
          
-         
-
- 
-
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
@@ -39,8 +35,8 @@
                 </a>
             </li>
             <li class="nav-item active">
-                <a href="./planning" class="nav-link">
-                    Planning
+                <a href="./gestionreservations" class="nav-link">
+                    Gestion des réservations
                 </a>
             </li>
             </c:if>
