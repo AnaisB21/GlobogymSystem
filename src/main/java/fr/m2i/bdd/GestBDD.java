@@ -15,6 +15,7 @@ import fr.m2i.models.Client;
 import fr.m2i.models.Coach;
 import fr.m2i.models.Cours;
 import fr.m2i.models.CoursType;
+import fr.m2i.models.Reservation;
 import fr.m2i.models.Utilisateur;
 
 
@@ -121,24 +122,7 @@ public class GestBDD {
 		}
     }
     
-    public void addClientToCours(Client client, Cours cours) {
-    	try {
-    		String sql = "INSERT INTO cours (date, coach_id, client_id, courstype_id) VALUES (?, ?, ?, ?) ";
-    		PreparedStatement ps = connection.prepareStatement (sql);
-    		
-    		ps.setDate(1, (Date) cours.getDate());
-			ps.setLong(2, cours.getCoachId());
-			ps.setLong(3, client.getId());
-			ps.setLong(4, cours.getCourstypeId());
-			
-			ps.execute();
-			ps.close();
-    	}
-    	
-    	catch (SQLException e) {
-    		e.printStackTrace();
-    	}
-    }   
+    
 	
 	
   //----------------READ----------------
@@ -188,6 +172,30 @@ public class GestBDD {
             e.printStackTrace();
         }
         return coach;
+    }
+    
+    public Cours selectCours(Long id) {
+        Cours cours = null;
+
+        try {
+            String sql = "SELECT * FROM cours WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setLong(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	Date date = rs.getDate("date");
+            	Long coachId = rs.getLong("coach_id");
+            	Long courstypeId = rs.getLong("courstype_id");
+                
+                cours = new Cours(id, date, coachId, courstypeId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cours;
     }
     
     
@@ -315,6 +323,37 @@ public List <CoursType> getAllCoursType() {
   	
   	  	return listeCours; 	  
     }
+    
+    public List<Long> getAllClientIdFromCours(Cours cours) {     
+    	
+        
+    	List <Long> listeClientId = new ArrayList<Long>();
+           
+  	  	try {
+          
+  	  		           
+  	  		String sql = "SELECT * FROM reservation WHERE cours_id = ?";
+  	  		PreparedStatement ps = connection.prepareStatement (sql);
+  	  		
+  	  		ps.setLong(1, cours.getId() );
+  	  		
+  	  		ResultSet rs = ps.executeQuery();
+  	  		
+  	  		while (rs.next()) {
+  	  			Long clientId = rs.getLong("client_id");
+  	  			listeClientId.add(clientId);
+  				
+	  		}	
+  	  		
+  	  		rs.close();
+  	  		ps.close();
+                   
+  	  	} catch (SQLException e) {
+  	  		e.printStackTrace();
+  	  	}
+  	
+  	  	return listeClientId; 	  
+    }
  
     
   //----------------UPDATE----------------
@@ -432,7 +471,7 @@ public List <CoursType> getAllCoursType() {
     
    //  
     
-    public int countClientsInCours(String date, int coachId, int courstypeId ) {
+    public int countClientsInCours(Cours cours) {
     	
     	int count = 0;
     
@@ -440,9 +479,9 @@ public List <CoursType> getAllCoursType() {
     		String sql = "SELECT * FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ?";
     		PreparedStatement ps = connection.prepareStatement(sql);   
     		
-    		ps.setDate(1, Date.valueOf(date));
-    		ps.setLong(2, coachId);
-    		ps.setLong(3, courstypeId);
+    		ps.setDate(1, (Date) cours.getDate());
+    		ps.setLong(2, cours.getCoachId());
+    		ps.setLong(3, cours.getCourstypeId());
     		
     		
     		ResultSet rs = ps.executeQuery();

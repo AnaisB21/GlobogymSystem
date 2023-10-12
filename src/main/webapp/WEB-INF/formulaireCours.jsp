@@ -17,7 +17,7 @@
                 <c:if test="${cours != null}">
                     <form action="update" method="post">
                 </c:if>
-                <c:if test="${ccours == null}">
+                <c:if test="${cours == null}">
                     <form action="insert" method="post">
                 </c:if>
 
