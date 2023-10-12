@@ -11,58 +11,45 @@
 </head>
 
 <body>
-    <div class="container col-md-5">
+    <jsp:include page="./_menu.jsp"></jsp:include>
+    <div class="container mt-5">
         <div class="card">
             <div class="card-body">
-                <c:if test="${cours != null}">
-                    <form action="update" method="post">
-                </c:if>
-                <c:if test="${cours == null}">
-                    <form action="insert" method="post">
-                </c:if>
-
-                <caption>
-                    <h2>
-                        <c:if test="${cours != null}">
-                            Modifier cours
-                        </c:if>
-                        <c:if test="${cours == null}">
-                            Ajouter nouveau cours
-                        </c:if>
+                <form action="${cours != null ? 'update' : 'insert'}" method="post">
+                    <h2 class="mb-4">
+                        ${cours != null ? 'Modifier cours' : 'Ajouter nouveau cours'}
                     </h2>
-                </caption>
 
-                <c:if test="${cours != null}">
-                    <input type="hidden" name="id" value="<c:out value='${cours.id}' />" />
-                </c:if>
-                
-                <fieldset class="form-group">
-                    <label>Date</label> 
-                    <input type="date" value="<c:out value='${cours.date}' />" class="form-control" name="date" required="required">
-                </fieldset>
+                    <input type="hidden" name="id" value="${cours != null ? cours.id : ''}" />
 
-                 <fieldset class="form-group">
-                    <label>Nom du coach</label> 
-                    <select name="coachId">
-                    <c:forEach var="coach" items="${listeCoaches}">
-                    	<option value="${coach.id}"><c:out value="${coach.nom}"></c:out></option>
-                    </c:forEach>
-                    </select>
-                </fieldset>
-                
-                                <fieldset class="form-group">
-                    <label>Type de Cours</label> 
-                    <select name="coursTypeId">
-                     <c:forEach var="coursType" items="${listeCoursType}">
-                    	<option value="${coursType.id}"><c:out value="${coursType.nom}"></c:out></option>
-                    </c:forEach>
-                    </select>
-                </fieldset>
-                <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" value="${cours != null ? cours.date : ''}" class="form-control" id="date" name="date" required="required">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="coachId" class="form-label">Nom du coach</label>
+                        <select class="form-select" name="coachId">
+                            <c:forEach var="coach" items="${listeCoaches}">
+                                <option value="${coach.id}"><c:out value="${coach.nom}" /></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="coursTypeId" class="form-label">Type de Cours</label>
+                        <select class="form-select" name="coursTypeId">
+                            <c:forEach var="coursType" items="${listeCoursType}">
+                                <option value="${coursType.id}"><c:out value="${coursType.nom}" /></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-dark">Enregistrer</button>
                 </form>
             </div>
         </div>
     </div>
-
 </body>
+
 </html>

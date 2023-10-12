@@ -34,11 +34,6 @@
                     Gestion des cours
                 </a>
             </li>
-            <li class="nav-item active">
-                <a href="./gestionreservations" class="nav-link">
-                    Gestion des réservations
-                </a>
-            </li>
             </c:if>
         </ul>
     </div>

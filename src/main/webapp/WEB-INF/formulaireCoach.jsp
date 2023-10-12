@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
@@ -11,43 +10,32 @@
 </head>
 
 <body>
-    <div class="container col-md-5">
+<jsp:include page="./_menu.jsp"></jsp:include>
+    <div class="container mt-5">
         <div class="card">
             <div class="card-body">
-                <c:if test="${coach != null}">
-                    <form action="update" method="post">
-                </c:if>
-                <c:if test="${coach == null}">
-                    <form action="insert" method="post">
-                </c:if>
-
-                <caption>
-                    <h2>
-                        <c:if test="${coach != null}">
-                            Modifier coach
-                        </c:if>
-                        <c:if test="${coach == null}">
-                            Ajouter nouveau coach
-                        </c:if>
+                <form action="${coach != null ? 'update' : 'insert'}" method="post">
+                    <h2 class="mb-4">
+                        ${coach != null ? 'Modifier coach' : 'Ajouter nouveau coach'}
                     </h2>
-                </caption>
 
-                <c:if test="${coach != null}">
-                    <input type="hidden" name="id" value="<c:out value='${coach.id}' />" />
-                </c:if>
-                <fieldset class="form-group">
-                    <label>Nom coach</label> <input type="text" value="<c:out value='${coach.nom}' />" class="form-control" name="nom" required="required">
-                </fieldset>
+                    <input type="hidden" name="id" value="${coach != null ? coach.id : ''}" />
 
-                <fieldset class="form-group">
-                    <label>Prénom coach</label> <input type="text" value="<c:out value='${coach.prenom}' />" class="form-control" name="prenom">
-                </fieldset>
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom coach</label>
+                        <input type="text" value="${coach != null ? coach.nom : ''}" class="form-control" id="nom" name="nom" required="required">
+                    </div>
 
-                <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <div class="mb-3">
+                        <label for="prenom" class="form-label">Prénom coach</label>
+                        <input type="text" value="${coach != null ? coach.prenom : ''}" class="form-control" id="prenom" name="prenom">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">Enregistrer</button>
                 </form>
             </div>
         </div>
     </div>
-
 </body>
+
 </html>
