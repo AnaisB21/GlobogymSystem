@@ -63,26 +63,11 @@ public class GestionCours extends HttpServlet {
 		
 		List<Cours> listeCours = bdd.getAllCours();
 		
-		List<Coach> listeCoaches = bdd.getAllCoaches();
-		
-		List <CoursType> listeCoursType = bdd.getAllCoursType();
-		
 		for (Cours cours : listeCours) {
-			
-			for (Coach coach : listeCoaches) {
-				if (cours.getCoachId() == coach.getId()) {
-					cours.setCoach(coach);
-					break;
-				}
-			}
-			for (CoursType coursType : listeCoursType) {
-				if (cours.getCourstypeId() == coursType.getId()) {
-					cours.setCoursType(coursType);
-					break;
-					}
-			}
-		
+			bdd.getNbClientsFromCours(cours);
 		}
+		
+		
 	
 		request.setAttribute("listeCours", listeCours);
 		request.getRequestDispatcher(VUE).forward(request, response);
@@ -109,11 +94,9 @@ public class GestionCours extends HttpServlet {
 		  
 		  response.sendRedirect(request.getContextPath() + "/gestioncours");
 		 
-
 	    }
 	  
 	  private void deleteCours(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		  // TO DO
 	        Long id = Long.parseLong(request.getParameter("id"));
 	        bdd.deleteCours(id);
 	        response.sendRedirect(request.getContextPath() + "/gestioncours");

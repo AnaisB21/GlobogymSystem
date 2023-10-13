@@ -25,6 +25,7 @@
                     <th>Date</th>
                     <th>Coach</th>
                     <th>Cours</th>
+                    <th>Nb de Reservations</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -42,6 +43,9 @@
                         </td>
                         <td>
                             <c:out value="${cours.coursType.nom}" />
+                        </td>
+                        <td>
+                            <c:out value="${cours.nbClients}"/>/20
                         </td>
                         <td>
                             <a href="gestioncours/delete?id=${cours.id}" class="btn btn-secondary">Supprimer le cours</a>

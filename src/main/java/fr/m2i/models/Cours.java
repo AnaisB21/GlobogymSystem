@@ -4,6 +4,7 @@ package fr.m2i.models;
 import java.util.Date;
 
 
+
 public class Cours {
 
 	//Champs
@@ -12,6 +13,7 @@ public class Cours {
 	private Date date;
 	private Coach coach;
 	private CoursType coursType;
+	private int nbClients;
 
 	
 		
@@ -75,7 +77,18 @@ public class Cours {
 		this.coachId = coachId;
 		this.courstypeId = courstypeId;
 	}
-
-
+	
+	public Cours(Long id, Date date, CoursType coursType, Coach coach) {
+		this.id = id;
+		this.date = date;
+		this.coursType = coursType;
+		this.coach = coach;
+	}
+	public int getNbClients() {
+		return nbClients;
+	}
+	public void setNbClients(int nbClients) {
+		this.nbClients = nbClients;
+	}
 
 }
