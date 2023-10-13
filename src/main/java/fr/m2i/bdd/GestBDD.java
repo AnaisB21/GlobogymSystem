@@ -176,9 +176,11 @@ public class GestBDD {
     
     public Cours selectCours(Long id) {
         Cours cours = null;
+        
+        // faire un jointure
 
         try {
-            String sql = "SELECT * FROM cours WHERE id = ?";
+            String sql = "SELECT cours.id cours_id, cours.date cours_date, ct.ID courstype_id, ct.name courstype_name, co.id coach_id, co.nom coach_nom, co.prenom coach_prenom FROM cours LEFT JOIN courstype ct ON (cours.courstype_id = ct.id)LEFT JOIN coach co ON (cours.coach_id = co.id) WHERE cours.id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
 
             ps.setLong(1, id);
@@ -186,11 +188,12 @@ public class GestBDD {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-            	Date date = rs.getDate("date");
-            	Long coachId = rs.getLong("coach_id");
-            	Long courstypeId = rs.getLong("courstype_id");
-                
-                cours = new Cours(id, date, coachId, courstypeId);
+            	Long cours_id = rs.getLong("cours_id");
+            	Date date = rs.getDate("cours_date");
+            	CoursType coursType = new CoursType(rs.getLong("coursType_id"), rs.getString("coursType_name"));
+            	Coach coach = new Coach(rs.getLong("coach_id"), rs.getString("coach_nom"), rs.getString("coach_prenom"));
+            	
+                cours = new Cours(cours_id, date, coursType, coach);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -298,15 +301,15 @@ public List <CoursType> getAllCoursType() {
   	  	try {
           
   	  		Statement stmt = connection.createStatement();            
-  	  		ResultSet rs = stmt.executeQuery("SELECT * FROM cours");
+  	  		ResultSet rs = stmt.executeQuery("SELECT cours.id cours_id, cours.date cours_date, c.id coach_id, c.nom coach_nom, c.prenom coach_prenom, ct.ID courstype_id, ct.name courstype_name   FROM cours LEFT JOIN coach c ON cours.coach_id = c.id LEFT JOIN courstype ct ON cours.courstype_id = ct.ID;");
              
   	  		while (rs.next()) {
-  	  			Long id = rs.getLong("id");
-  	  			Date date = rs.getDate("date");
-  	  			Long coachId = rs.getLong("coach_id");
-  	  			Long courstypeId = rs.getLong("courstype_id");
+  	  			Long id = rs.getLong("cours_id");
+  	  			Date date = rs.getDate("cours_date");
+  	  			Coach coach = new Coach(rs.getLong("coach_id"), rs.getString("coach_nom"), rs.getString("coach_prenom"));
+  	  			CoursType coursType = new CoursType(rs.getLong("courstype_id"), rs.getString("courstype_name"));
   	  	
-  				Cours cours = new Cours(id, date, coachId, courstypeId);
+  				Cours cours = new Cours(id, date, coursType, coach);
   			
   		  	  	listeCours.add(cours);
   				
@@ -320,19 +323,46 @@ public List <CoursType> getAllCoursType() {
   	  	}
   	    	 
 
-  	
   	  	return listeCours; 	  
     }
     
-    public List<Long> getAllClientIdFromCours(Cours cours) {     
+    
+    public void getNbClientsFromCours(Cours cours) {
+    	
+    	int nbClients = 0;
+    	
+	  	try {
+			  
+	    	String sql = "SELECT * FROM reservation WHERE reservation.cours_id = ?";
+	    	PreparedStatement ps = connection.prepareStatement(sql);
+	    
+	    	ps.setLong(1, cours.getId());
+	    	
+	    	ResultSet rs = ps.executeQuery();
+	    	
+	    	while (rs.next()) {
+	    		nbClients += 1;
+	    	}
+	    			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	cours.setNbClients(nbClients);
+    	
+    	
+    }
+    
+    public List<Client> getAllClientsFromCours(Cours cours) {     
     	
         
-    	List <Long> listeClientId = new ArrayList<Long>();
+    	List <Client> listeClients = new ArrayList<Client>();
            
   	  	try {
           
   	  		           
-  	  		String sql = "SELECT * FROM reservation WHERE cours_id = ?";
+  	  		String sql = "SELECT client_id, nom nom_client, prenom prenom_client FROM reservation LEFT JOIN client c ON reservation.client_id = c.id WHERE cours_id = ?";
   	  		PreparedStatement ps = connection.prepareStatement (sql);
   	  		
   	  		ps.setLong(1, cours.getId() );
@@ -341,8 +371,11 @@ public List <CoursType> getAllCoursType() {
   	  		
   	  		while (rs.next()) {
   	  			Long clientId = rs.getLong("client_id");
-  	  			listeClientId.add(clientId);
+  	  			String nomClient = rs.getString("nom_client");
+  	  			String prenomClient = rs.getString("prenom_client");
+  	  			Client client = new Client(clientId, nomClient, prenomClient);
   				
+  	  			listeClients.add(client);
 	  		}	
   	  		
   	  		rs.close();
@@ -352,7 +385,7 @@ public List <CoursType> getAllCoursType() {
   	  		e.printStackTrace();
   	  	}
   	
-  	  	return listeClientId; 	  
+  	  	return listeClients; 	  
     }
  
     
@@ -451,54 +484,12 @@ public List <CoursType> getAllCoursType() {
    }
    
  
-   
-    public void removeClientFromCours(Client client, Cours cours) {
-    	try {
-    		String sql = "DELETE FROM cours WHERE client_id = ? ";
-    		PreparedStatement ps = connection.prepareStatement (sql);
-    		
-    		ps.setLong(1, client.getId());
-			
-			ps.execute();
-			ps.close();
-    	}
-    	
-    	catch (SQLException e) {
-    		e.printStackTrace();
-    	}
-    }   
+  
     
     
    //  
     
-    public int countClientsInCours(Cours cours) {
-    	
-    	int count = 0;
-    
-    	try {
-    		String sql = "SELECT * FROM cours WHERE date = ? AND coach_id = ? AND courstype_id = ?";
-    		PreparedStatement ps = connection.prepareStatement(sql);   
-    		
-    		ps.setDate(1, (Date) cours.getDate());
-    		ps.setLong(2, cours.getCoachId());
-    		ps.setLong(3, cours.getCourstypeId());
-    		
-    		
-    		ResultSet rs = ps.executeQuery();
-			
-			
-			while (rs.next()) {
-				count ++;
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	
-    	return count;
-    	
-    }   
+     
     
     
     public Utilisateur findUser(String email, String motdepasse){	

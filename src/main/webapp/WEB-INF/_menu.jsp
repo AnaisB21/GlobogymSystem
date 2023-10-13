@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a href="./connexion" class="nav-link">
+                <a href="./connexion" class="nav-link"> 
                     Connexion
                 </a>
             </li>

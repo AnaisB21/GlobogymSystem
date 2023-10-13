@@ -6,7 +6,6 @@ public class Reservation {
 	
 	private Long id, clientId, coursId;
 	private Cours cours;
-	private int nbClients;
 	private List <Client> listeClients;
 
 	public Long getId() {
@@ -60,14 +59,6 @@ public class Reservation {
 		this.listeClients = listeClients;
 	}
 
-	public int getNbClients() {
-		return nbClients;
-	}
 
-	public void setNbClients(int nbClients) {
-		this.nbClients = nbClients;
-	}
-	
-	
 
 }

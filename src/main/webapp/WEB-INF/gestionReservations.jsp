@@ -24,7 +24,7 @@
 	        </tr>
         </thead>
         <tbody>
-  			<c:forEach var="client" items="${listClients}">
+  			<c:forEach var="client" items="${listeClients}">
 	            <tr>
 	     
 	                <td>

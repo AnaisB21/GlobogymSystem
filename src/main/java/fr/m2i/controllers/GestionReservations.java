@@ -68,29 +68,13 @@ public class GestionReservations extends HttpServlet {
 		Long coursId = Long.parseLong(request.getParameter("id"));
 		Cours cours = bdd.selectCours(coursId);
 		
+		List <Client> listeClients = bdd.getAllClientsFromCours(cours);
+				
 		
-		List <Long> listClientId = bdd.getAllClientIdFromCours(cours);
+		request.setAttribute("cours", cours);
+		request.setAttribute("listeClients", listeClients);
 		
-		List <Client> listClients = new ArrayList <Client>();
-		
-		for (Long clientId : listClientId) {
-			Client client = bdd.selectClient(clientId);
-			listClients.add(client);
-		}
-		
-		List <CoursType> listCoursType = bdd.getAllCoursType();
-		
-		for (CoursType coursType : listCoursType ) {
-			if (coursType.getId() == cours.getCourstypeId()) {
-				cours.setCoursType(coursType);
-			}
-		}
-		
-		
-		 request.setAttribute("cours", cours);
-		 request.setAttribute("listClients", listClients);
-		
-	     request.getRequestDispatcher(VUE).forward(request, response);
+	    request.getRequestDispatcher(VUE).forward(request, response);
 	 }
 		
 
