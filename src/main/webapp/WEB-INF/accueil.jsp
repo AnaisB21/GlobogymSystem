@@ -13,7 +13,7 @@
 
 <body>
 	<!-- utilisation des jspl pour inclure automatique un menu -->
-	<jsp:include page="./_menu.jsp"></jsp:include>
+	<jsp:include page="./inc/_menu.jsp"></jsp:include>
 	
 	<c:if test="${sessionScope['sessionUser'] != null}">
     Bonjour ${sessionScope['sessionUser'].email}
