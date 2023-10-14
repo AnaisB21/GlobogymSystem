@@ -536,7 +536,6 @@ public List<Client> getAllClientsNotInCours(Cours cours) {
    }
    
    public void deleteCours(long id) {
-	   
 	  
 	   try {
 		   String sql="DELETE FROM cours WHERE id=?";
@@ -547,9 +546,13 @@ public List<Client> getAllClientsNotInCours(Cours cours) {
 		   ps.execute();
 		   ps.close();
 		   
+		   
+		   
+		   
 	   } 	   
 	   catch (SQLException e) {
 		   e.printStackTrace();
+		   
    		}
    }
    

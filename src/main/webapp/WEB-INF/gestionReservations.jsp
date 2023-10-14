@@ -45,6 +45,7 @@
     <div class="text-center">
         <a href="cours/new?id=${cours.id}" class="btn btn-outline-dark">Ajouter client</a>
     </div>
+    
 </div>
 </body>
 </html>

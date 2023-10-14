@@ -59,5 +59,14 @@
          <a href="gestioncours/new" class="btn btn-outline-dark">Ajouter</a>
         </div>
     </div>
+    
+    
+	<c:if test="${SQLMessage != null }">
+        <div class="alert alert-secondary" role="alert">
+            ${SQLMessage}
+        </div>
+    </c:if>
+    
+    
 </body>
 </html>

@@ -99,6 +99,8 @@ public class GestionCours extends HttpServlet {
 	  private void deleteCours(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 	        Long id = Long.parseLong(request.getParameter("id"));
 	        bdd.deleteCours(id);
+	        
+	       
 	        response.sendRedirect(request.getContextPath() + "/gestioncours");
 	    }
 	  
