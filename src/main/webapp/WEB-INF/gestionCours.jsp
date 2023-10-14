@@ -16,9 +16,9 @@
     <jsp:include page="./inc/_menu.jsp"></jsp:include>
 
     <div class="container mt-3">
-        <h1>Liste des cours</h1>
+        <h2>Liste des cours</h2>
 
-        <table class="table">
+        <table class="mt-3 table table-striped table-bordered">
             <thead class="bg-light">
                 <tr>
                     <th>Id</th>
@@ -44,11 +44,11 @@
                         <td>
                             <c:out value="${cours.coursType.nom}" />
                         </td>
-                        <td>
-                            <c:out value="${cours.nbClients}"/>/20
+                        <td class="text-center">
+                            <span class="disabled btn btn-info"><c:out value="${cours.nbClients}"/>/20</span>
                         </td>
-                        <td>
-                            <a href="gestioncours/delete?id=${cours.id}" class="btn btn-secondary">Supprimer le cours</a>
+                        <td class="text-center">
+                            <a href="gestioncours/delete?id=${cours.id}" class="btn btn-warning">Supprimer le cours</a>
                             <a href="gestionreservations/cours?id=${cours.id}" class="btn btn-secondary">Voir les réservations</a>
                         </td>
                     </tr>

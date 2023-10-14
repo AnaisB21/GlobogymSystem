@@ -122,6 +122,23 @@ public class GestBDD {
 		}
     }
     
+    public void addClientToReservation(Client client, Cours cours) {
+    	
+    	try {
+			String sql = "INSERT INTO reservation (client_id, cours_id) VALUES (?, ?);";
+			
+			PreparedStatement ps = connection.prepareStatement (sql);
+			
+			ps.setLong(1, client.getId());
+			ps.setLong(2, cours.getId());
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+    	
+    }
+    
     
 	
 	
@@ -177,7 +194,6 @@ public class GestBDD {
     public Cours selectCours(Long id) {
         Cours cours = null;
         
-        // faire un jointure
 
         try {
             String sql = "SELECT cours.id cours_id, cours.date cours_date, ct.ID courstype_id, ct.name courstype_name, co.id coach_id, co.nom coach_nom, co.prenom coach_prenom FROM cours LEFT JOIN courstype ct ON (cours.courstype_id = ct.id)LEFT JOIN coach co ON (cours.coach_id = co.id) WHERE cours.id = ?";
@@ -387,6 +403,42 @@ public List <CoursType> getAllCoursType() {
   	
   	  	return listeClients; 	  
     }
+    
+public List<Client> getAllClientsNotInCours(Cours cours) {     
+    	
+        
+    	List <Client> listeClients = new ArrayList<Client>();
+           
+  	  	try {
+          
+  	  		           
+  	  		String sql = "SELECT c.id client_id, c.nom AS nom_client, c.prenom AS prenom_client FROM client c WHERE c.id NOT IN (SELECT r.client_id FROM reservation r WHERE r.cours_id = ?);";
+  	  		PreparedStatement ps = connection.prepareStatement (sql);
+  	  		
+  	  		ps.setLong(1, cours.getId() );
+  	  		
+  	  		ResultSet rs = ps.executeQuery();
+  	  		
+  	  		while (rs.next()) {
+  	  			Long clientId = rs.getLong("client_id");
+  	  			String nomClient = rs.getString("nom_client");
+  	  			String prenomClient = rs.getString("prenom_client");
+  	  			Client client = new Client(clientId, nomClient, prenomClient);
+  				
+  	  			listeClients.add(client);
+	  		}	
+  	  		
+  	  		rs.close();
+  	  		ps.close();
+                   
+  	  	} catch (SQLException e) {
+  	  		e.printStackTrace();
+  	  	}
+  	
+  	  	return listeClients; 	  
+    }
+    
+    
  
     
   //----------------UPDATE----------------
@@ -437,6 +489,24 @@ public List <CoursType> getAllCoursType() {
 		   PreparedStatement ps = connection.prepareStatement (sql);
 		   
 		   ps.setLong(1, id);
+		   
+		   ps.execute();
+		   ps.close();
+		   
+	   } 
+	   
+	   catch (SQLException e) {
+		   e.printStackTrace();
+   		}
+   }
+   
+   public void deleteClientFromReservation(Client client, Cours cours) {
+	   try {
+		   String sql="DELETE FROM reservation WHERE client_id = ? AND cours_id = ?;";
+		   PreparedStatement ps = connection.prepareStatement (sql);
+		   
+		   ps.setLong(1, client.getId());
+		   ps.setLong(2, cours.getId());
 		   
 		   ps.execute();
 		   ps.close();

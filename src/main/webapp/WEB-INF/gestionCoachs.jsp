@@ -19,7 +19,7 @@
     <div class="container mt-3">
         <h1>Liste des coachs</h1>
 
-        <table class="table">
+        <table class="mt-3 table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -40,7 +40,7 @@
                         <td>
                             <c:out value="${coach.prenom}" />
                         </td>
-                        <td>
+                        <td class="text-center">
                             <a href="gestioncoachs/edit?id=${coach.id}" class="btn btn-secondary">Modifier</a>
                             <a href="gestioncoachs/delete?id=${coach.id}" class="btn btn-secondary">Supprimer</a>
                         </td>
