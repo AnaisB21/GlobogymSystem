@@ -14,9 +14,9 @@
     <!-- utilisation des jspl pour inclure automatique un menu -->
     <jsp:include page="./inc/_menu.jsp"></jsp:include>
 <div class="container mt-3">
-    <h1>Liste des clients</h1>
+    <h2>Liste des clients</h2>
 
-    <table class="table">
+    <table class="mt-3 table table-striped table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
@@ -37,7 +37,7 @@
                     <td>
                         <c:out value="${client.prenom}" />
                     </td>
-                    <td>
+                    <td class="text-center">
                         <a href="gestionclients/edit?id=${client.id}" class="btn btn-secondary">Modifier</a>
                         <a href="gestionclients/delete?id=${client.id}" class="btn btn-secondary">Supprimer</a>
                     </td>
