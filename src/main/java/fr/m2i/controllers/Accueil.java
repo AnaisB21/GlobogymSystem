@@ -44,14 +44,19 @@ public class Accueil extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		System.out.println("cucou");
 		String motdepasse = request.getParameter("motdepasse");
 		String email = request.getParameter("email");
 		
 		GestBDD bdd = new GestBDD();
 		bdd.connection();
+		System.out.println(bdd.userExist(email, motdepasse));
 		if (bdd.userExist(email, motdepasse)) {
+			System.out.println("je rentre le user exist");
 			Utilisateur sessionUser = bdd.findUser(email, motdepasse);
 			request.getSession().setAttribute("sessionUser", sessionUser);
+			
 		}
 		else {
 			request.setAttribute("invalide", "Votre mot de passe ou email est erronée");
