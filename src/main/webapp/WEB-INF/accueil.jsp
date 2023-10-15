@@ -15,6 +15,8 @@
 	<!-- utilisation des jspl pour inclure automatique un menu -->
 	<jsp:include page="./inc/_menu.jsp"></jsp:include>
 	
+	<c:if test="${sessionScope['sessionUser'] != null}">
+	
 	<div class="container">
 		
 		<h2 class="mt-5 display-7">Globogym Admin</h2>
@@ -36,6 +38,8 @@
 	</div>
 
 	</div>
+	
+	</c:if>
 	
  	
 </body>
