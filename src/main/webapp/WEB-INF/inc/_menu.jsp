@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <img class="d-inline-block align-top"
-         src="https://img.freepik.com/vecteurs-premium/icone-calendrier-calendrier-logo-date-heure-icone_761928-109.jpg"
+         src="./images/globogymlogo.png"
          width="50" height="50"/>
          
 
