@@ -17,7 +17,7 @@
     <jsp:include page="./inc/_menu.jsp"></jsp:include>
 
     <div class="container mt-3">
-        <h1>Liste des coachs</h1>
+        <h2 class="mt-5 display-7" >Liste des coachs</h2>
 
         <table class="mt-3 table table-striped table-bordered">
             <thead>

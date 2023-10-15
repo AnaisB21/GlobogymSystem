@@ -15,21 +15,27 @@
 	<!-- utilisation des jspl pour inclure automatique un menu -->
 	<jsp:include page="./inc/_menu.jsp"></jsp:include>
 	
-	<c:if test="${sessionScope['sessionUser'] != null}">
-    Bonjour ${sessionScope['sessionUser'].email}
-    <br>
-    <a href="deconnexion">Se Deconnecter</a>
-	</c:if>
-	
-	<h1>Bienvenue</h1> 
-	
-	
-	<c:if test="${not (requestScope['user1']ne null)}">
-			Vous êtes connecté sous le nom ${sessionScope["user1"].nomUser}<br>
-			Votre identifiant est ${sessionScope["user1"].mailUser} <br>
-		</c:if>
-	<br>
-	<br>
+	<div class="container">
+		
+		<h2 class="mt-5 display-7">Globogym Admin</h2>
+		
+		<h3 class="display-8">Les derniers cours ajoutés</h3>
+		<div class="mt-3 row">
+	    <c:forEach var="cours" items="${listeCours}">
+	        <div class="col-md-4"> 
+	            <div class="card" style="width: 18rem;">
+	                <img class="card-img-top" src="./images/gymbackground.jpg" alt="Card image cap">
+	                <div class="card-body">
+	                    <h5 class="card-title">${cours.coursType.nom}</h5>
+	                    <p class="card-text">Le ${cours.date} avec ${cours.coach.nom} ${cours.coach.prenom} </p>
+	                    <a href="gestionreservations/cours?id=${cours.id}" class="btn btn-outline-dark">Voir les reservations</a>
+	                </div>
+	            </div>
+	        </div>
+	    </c:forEach>
+	</div>
+
+	</div>
 	
  	
 </body>

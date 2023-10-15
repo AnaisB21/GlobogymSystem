@@ -342,6 +342,42 @@ public List <CoursType> getAllCoursType() {
   	  	return listeCours; 	  
     }
     
+public List<Cours> getlast3cours () {     
+    	
+
+        
+    	List <Cours> listeCours = new ArrayList<Cours>();
+           
+  	  	try {
+          
+  	  		Statement stmt = connection.createStatement();            
+  	  		ResultSet rs = stmt.executeQuery("SELECT cours.id cours_id, cours.date cours_date, c.id coach_id, c.nom coach_nom, c.prenom coach_prenom, ct.ID courstype_id, ct.name courstype_name   FROM cours LEFT JOIN coach c ON cours.coach_id = c.id LEFT JOIN courstype ct ON cours.courstype_id = ct.ID ORDER BY cours_id DESC LIMIT 3;");
+             
+  	  		while (rs.next()) {
+  	  			Long id = rs.getLong("cours_id");
+  	  			Date date = rs.getDate("cours_date");
+  	  			Coach coach = new Coach(rs.getLong("coach_id"), rs.getString("coach_nom"), rs.getString("coach_prenom"));
+  	  			CoursType coursType = new CoursType(rs.getLong("courstype_id"), rs.getString("courstype_name"));
+  	  	
+  				Cours cours = new Cours(id, date, coursType, coach);
+  			
+  		  	  	listeCours.add(cours);
+  				
+	  		}	
+  	  		
+  	  		rs.close();
+  	  		stmt.close();
+                   
+  	  	} catch (SQLException e) {
+  	  		e.printStackTrace();
+  	  	}
+  	    	 
+
+  	  	return listeCours; 	  
+    }
+    
+    
+    
     
     public void getNbClientsFromCours(Cours cours) {
     	
@@ -535,7 +571,7 @@ public List<Client> getAllClientsNotInCours(Cours cours) {
    		}
    }
    
-   public void deleteCours(long id) {
+   public String deleteCours(long id) {
 	  
 	   try {
 		   String sql="DELETE FROM cours WHERE id=?";
@@ -546,12 +582,16 @@ public List<Client> getAllClientsNotInCours(Cours cours) {
 		   ps.execute();
 		   ps.close();
 		   
+		   return "OK";
 		   
 		   
 		   
 	   } 	   
 	   catch (SQLException e) {
 		   e.printStackTrace();
+		   
+		   return "Error";
+		   
 		   
    		}
    }

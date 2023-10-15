@@ -7,9 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-
+import java.util.List;
 
 import fr.m2i.bdd.GestBDD;
+import fr.m2i.models.Cours;
 import fr.m2i.models.Utilisateur;
 
 
@@ -29,6 +30,14 @@ public class Accueil extends HttpServlet {
 		// TODO Auto-generated method stub
 		GestBDD bdd = new GestBDD();
 		bdd.connection();
+		
+		List<Cours> listeCours = bdd.getlast3cours();
+		
+		for (Cours cours : listeCours) {
+			bdd.getNbClientsFromCours(cours);
+		}
+		
+		request.setAttribute("listeCours", listeCours);
 		request.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
