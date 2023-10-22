@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <img class="d-inline-block align-top"
-         src="./images/globogymlogo.png"
+         src="<%=request.getContextPath()%>/images/globogymlogo.png"
          width="50" height="50"/>
          
 
